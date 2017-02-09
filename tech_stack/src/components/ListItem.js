@@ -3,7 +3,9 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  LayoutAnimation
+  LayoutAnimation,
+  UIManager,
+  Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -12,6 +14,9 @@ import { CardSection } from './common';
 
 class ListItem extends Component {
   componentWillUpdate() {
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
     LayoutAnimation.spring();
   }
 
@@ -21,7 +26,7 @@ class ListItem extends Component {
     if (expanded) {
       return (
         <CardSection>
-          <Text style={{ flex: 1 }}>
+          <Text style={styles.bodyTextStyle}>
             {library.description}
           </Text>
         </CardSection>
@@ -54,6 +59,11 @@ const styles = {
   titleStyle: {
     fontSize: 18,
     paddingLeft: 15
+  },
+  bodyTextStyle: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15
   }
 }
 
