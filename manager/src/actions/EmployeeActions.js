@@ -17,6 +17,7 @@ export const employeeUpdate = ({ prop, value }) => {
   };
 };
 
+
 // Creates new employee within firebase
 export const employeeCreate = ({ name, phone, shift }) => {
   const { currentUser } = firebase.auth();
@@ -42,6 +43,20 @@ export const employeeSave = ({ name, phone, shift, uid }) => {
       .then(() => {
         // after update success, reset the redux form values
         dispatch({ type: EMPLOYEE_SAVE_SUCCESS });
+        Actions.employeeList({ type: 'reset' });
+      });
+  }
+};
+
+
+// Deletes single employee
+export const employeeDelete = ({ uid }) => {
+  const { currentUser } = firebase.auth();
+
+  return () => {
+    firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+      .remove()
+      .then(() => {
         Actions.employeeList({ type: 'reset' });
       });
   }
